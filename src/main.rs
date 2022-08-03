@@ -1,5 +1,6 @@
 use rand::Rng;
 use std::io;
+use dialoguer::Confirm;
 
 fn main() {
     println!("KEYPAD_OPTIONS:");
@@ -42,8 +43,12 @@ fn main() {
             },
             "lock" => {
                 if open {
-                    open = false;
-                    the_code = generate_code();
+                    if Confirm::new().with_prompt("confirm").interact()? {
+                        open = false;
+                        the_code = generate_code();
+                    } else {
+                        println!("nah");
+                    }
                 } else {
                     println!("already_locked");
                 }
